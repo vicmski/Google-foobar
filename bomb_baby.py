@@ -55,11 +55,15 @@ def answer(M, F):
     m = int(M)
     f = int(F)
 
-    while m > 0 or f > 0:
-        if m-f == 1 or m-f == 1:
-            if m-f == 1:
+    while m != 1 or f != 1:
+
+        if m == 0 or f == 0:
+            return "impossible"
+
+        if m - f == 1 or m - f == 1:
+            if m - f == 1:
                 count += f
-            if f-m == 1:
+            if f - m == 1:
                 count += m
             break
 
@@ -69,9 +73,7 @@ def answer(M, F):
         elif m > f:
             count += m / f
             m %= f
-    if m == 0 or f == 0:
-        return "impossible"
 
     return str(count)
 
-# not passing all tests yet
+# few tests still failing
