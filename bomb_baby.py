@@ -74,5 +74,4 @@ def answer(M, F):
 
     return str(count)
 
-
-print answer(4, 2)
+# not passing all tests yet
