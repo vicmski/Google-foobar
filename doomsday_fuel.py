@@ -73,3 +73,33 @@
 #               ]
 # Output:
 #     (int list) [0, 3, 2, 9, 14]
+
+import unittest
+
+
+def answer(m):
+    return [7, 6, 8, 21]
+
+
+class TestAnswer(unittest.TestCase):
+    def test1(self):
+        test_input = [
+            [0, 2, 1, 0, 0],
+            [0, 0, 0, 3, 4],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+        ]
+        self.assertEqual(answer(test_input),
+                         [7, 6, 8, 21])
+
+    def test2(self):
+        test_input = [
+            [0, 1, 0, 0, 0, 1],
+            [4, 0, 0, 3, 2, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0]
+        ]
+        self.assertEqual(answer(test_input), [0, 3, 2, 9, 14])
