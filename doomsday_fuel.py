@@ -80,73 +80,70 @@ import unittest
 from fractions import Fraction
 
 
-def multiplyMatrices(a, b):
+def multiply_matrices(a, b):
     # confirm dimensions
-    aRows = len(a)
-    aCols = len(a[0])
-    bRows = len(b)
-    bCols = len(b[0])
-    assert(aCols == bRows) # belongs in a contract
-    rows = aRows
-    cols = bCols
+    a_rows = len(a)
+    a_cols = len(a[0])
+    b_cols = len(b[0])
+    rows = a_rows
+    cols = b_cols
     # create the result matrix c = a*b
-    c = make2dList(rows, cols)
+    c = make_2d_list(rows, cols)
     # now find each value in turn in the result matrix
     for row in xrange(rows):
         for col in xrange(cols):
-            dotProduct = Fraction(0, 1)
-            for i in xrange(aCols):
-                dotProduct += a[row][i]*b[i][col]
-            c[row][col] = dotProduct
+            dot_product = Fraction(0, 1)
+            for i in xrange(a_cols):
+                dot_product += a[row][i]*b[i][col]
+            c[row][col] = dot_product
     return c
 
 
-def multiplyRowOfSquareMatrix(m, row, k):
+def multiply_row_of_square_matrix(m, row, k):
     n = len(m)
-    rowOperator = makeIdentity(n)
-    rowOperator[row][row] = k
-    return multiplyMatrices(rowOperator, m)
+    row_operator = make_identity(n)
+    row_operator[row][row] = k
+    return multiply_matrices(row_operator, m)
 
 
-def make2dList(rows, cols):
-    a=[]
-    for row in xrange(rows): a += [[0]*cols]
+def make_2d_list(rows, cols):
+    a = []
+    for row in xrange(rows):
+        a += [[0] * cols]
     return a
 
 
-def makeIdentity(n):
-    result = make2dList(n,n)
+def make_identity(n):
+    result = make_2d_list(n, n)
     for i in xrange(n):
         result[i][i] = Fraction(1, 1)
     return result
 
 
-def addMultipleOfRowOfSquareMatrix(m, sourceRow, k, targetRow):
-    # add k * sourceRow to targetRow of matrix m
+def add_multiple_of_row_of_square_matrix(m, source_row, k, target_row):
+    # add k * source_row to target_row of matrix m
     n = len(m)
-    rowOperator = makeIdentity(n)
-    rowOperator[targetRow][sourceRow] = k
-    return multiplyMatrices(rowOperator, m)
+    row_operator = make_identity(n)
+    row_operator[target_row][source_row] = k
+    return multiply_matrices(row_operator, m)
 
 
-
-def invertMatrix(m):
+def invert_matrix(m):
     n = len(m)
     assert(len(m) == len(m[0]))
-    inverse = makeIdentity(n)
+    inverse = make_identity(n)
     for col in xrange(n):
-        diagonalRow = col
-        assert(m[diagonalRow][col] != 0)
-        k = Fraction(1,m[diagonalRow][col])
-        m = multiplyRowOfSquareMatrix(m, diagonalRow, k)
-        inverse = multiplyRowOfSquareMatrix(inverse, diagonalRow, k)
-        sourceRow = diagonalRow
-        for targetRow in xrange(n):
-            if (sourceRow != targetRow):
-                k = -m[targetRow][col]
-                m = addMultipleOfRowOfSquareMatrix(m, sourceRow, k, targetRow)
-                inverse = addMultipleOfRowOfSquareMatrix(inverse, sourceRow,
-                                                         k, targetRow)
+        diagonal_row = col
+        assert(m[diagonal_row][col] != 0)
+        k = Fraction(1, m[diagonal_row][col])
+        m = multiply_row_of_square_matrix(m, diagonal_row, k)
+        inverse = multiply_row_of_square_matrix(inverse, diagonal_row, k)
+        source_row = diagonal_row
+        for target_row in xrange(n):
+            if source_row != target_row:
+                k = -m[target_row][col]
+                m = add_multiple_of_row_of_square_matrix(m, source_row, k, target_row)
+                inverse = add_multiple_of_row_of_square_matrix(inverse, source_row, k, target_row)
     # that's it!
     return inverse
 
@@ -229,12 +226,15 @@ def answer(m):
         else:
             non_terminal_states.append(index)
 
+    if len(terminal_states) == 1:
+        return [1, 1]
+
     transform_matrix(m)
 
-    Q = get_q(m, non_terminal_states)
-    R = get_r(m, non_terminal_states, terminal_states)
+    q = get_q(m, non_terminal_states)
+    r = get_r(m, non_terminal_states, terminal_states)
 
-    result = multiplyMatrices(invertMatrix(subtract_matrices(makeIdentity(len(Q)), Q)), R)
+    result = multiply_matrices(invert_matrix(subtract_matrices(make_identity(len(q)), q)), r)
 
     denominator = lcm_for_arrays([item.denominator for item in result[0]])
 
@@ -287,3 +287,12 @@ class TestAnswer(unittest.TestCase):
             [0, 0, 0, 0],
         ]
         self.assertEqual(answer(test_input), [0, 1, 1])
+
+    def test5(self):
+        test_input = [
+            [0, 0, 0, 0],
+            [1, 1, 1, 1],
+            [1, 1, 1, 1],
+            [1, 1, 1, 1]
+        ]
+        self.assertEqual(answer(test_input), [1, 1])
