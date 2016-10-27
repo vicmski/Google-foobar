@@ -1,4 +1,5 @@
 """
+
 Find the Access Codes
 =====================
 
@@ -56,3 +57,11 @@ class TestAnswer(unittest.TestCase):
     def test2(self):
         test_input = [1, 2, 3, 4, 5, 6]
         self.assertEqual(answer(test_input), 3)
+
+    def test3(self):
+        test_input = [1, 5, 6]
+        self.assertEqual(answer(test_input), 0)
+
+    def test4(self):
+        test_input = [1, 0]
+        self.assertEqual(answer(test_input), 0)

@@ -1,4 +1,5 @@
 """
+
 Doomsday Fuel
 =============
 
@@ -74,6 +75,7 @@ Inputs:
            ]
 Output:
     (int list) [0, 3, 2, 9, 14]
+
 """
 from fractions import gcd
 import unittest
