@@ -65,3 +65,7 @@ class TestAnswer(unittest.TestCase):
     def test4(self):
         test_input = [1, 0]
         self.assertEqual(answer(test_input), 0)
+
+    def test5(self):
+        test_input = [1, 2, 5, 6]
+        self.assertEqual(answer(test_input), 1)
