@@ -46,7 +46,28 @@ import unittest
 
 
 def answer(l):
-    return 0
+    list_size = len(l)
+    count = 0
+    while list_size >= 2:
+        list_size -= 1
+        current_item = l[list_size]
+        nested_list_index = list_size - 1
+        while nested_list_index >= 1:
+            nested_list_item = l[nested_list_index]
+            if current_item % nested_list_item == 0:
+                second_nested_list_index = nested_list_index - 1
+                while second_nested_list_index >= 0:
+                    second_nested_list_item = l[second_nested_list_index]
+                    if nested_list_item % second_nested_list_item == 0:
+                        count += 1
+                    second_nested_list_index -= 1
+            nested_list_index -= 1
+
+    return count
+
+
+def get_dividers(list, divident):
+    return [divider for divider in list if not divident % divider]
 
 
 class TestAnswer(unittest.TestCase):
