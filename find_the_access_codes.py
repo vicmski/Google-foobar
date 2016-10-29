@@ -45,32 +45,27 @@ Output:
 import unittest
 
 
+def find_multiples(l, index):
+    current_divider = l[index]
+    return [item for item in l[index + 1:] if item % current_divider == 0]
+
+
+def find_dividers(l, index):
+    current_dividend = l[index]
+    return [item for item in l[:index] if current_dividend % item == 0]
+
+
 def answer(l):
     list_size = len(l)
     count = 0
     while list_size >= 2:
         list_size -= 1
-        current_item = l[list_size]
-        nested_list_index = list_size - 1
-        while nested_list_index >= 1:
-            nested_list_item = l[nested_list_index]
-            if current_item % nested_list_item == 0:
-                second_nested_list_index = nested_list_index - 1
-                while second_nested_list_index >= 0:
-                    second_nested_list_item = l[second_nested_list_index]
-                    if nested_list_item % second_nested_list_item == 0:
-                        count += 1
-                    second_nested_list_index -= 1
-            nested_list_index -= 1
+        count += len(find_dividers(l, list_size)) * len(find_multiples(l, list_size))
 
     return count
 
 
-def get_dividers(list, divident):
-    return [divider for divider in list if not divident % divider]
-
-
-class TestAnswer(unittest.TestCase):
+class TestFindTheAccessCodes(unittest.TestCase):
     def test1(self):
         test_input = [1, 1, 1]
         self.assertEqual(answer(test_input), 1)
@@ -83,10 +78,6 @@ class TestAnswer(unittest.TestCase):
         test_input = [1, 5, 6]
         self.assertEqual(answer(test_input), 0)
 
-    def test4(self):
-        test_input = [1, 0]
-        self.assertEqual(answer(test_input), 0)
-
     def test5(self):
-        test_input = [1, 2, 5, 6]
-        self.assertEqual(answer(test_input), 1)
+        test_input = range(1, 2001)
+        self.assertEqual(answer(test_input), 40888)
