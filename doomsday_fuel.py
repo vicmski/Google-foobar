@@ -247,7 +247,7 @@ def answer(m):
     return result
 
 
-class TestAnswer(unittest.TestCase):
+class TestDoomsdayFuel(unittest.TestCase):
     def test1(self):
         test_input = [
             [0, 2, 1, 0, 0],
