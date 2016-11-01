@@ -4,4 +4,4 @@ This is a repo to keep my solutions for Foobar challenges from Google. **They ma
 
 # Using them as solutions to the challenges
 
-Please consider trying to understand the algorithms before submitting them as solutions. Feel free to use them.
+Please consider trying to understand the algorithms before submitting them as solutions.
