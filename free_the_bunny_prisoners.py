@@ -83,16 +83,69 @@
 import unittest
 
 
+def generate_combinations(q, n):
+    answer = []
+    i = 1
+    while i <= n:
+        answer.extend(generate_branch(q - n, i, q, [i]))
+        i += 1
+
+    return answer
+
+
+def generate_branch(depth_left, current_branch_value, total_rabbits_available, items_so_far):
+    if depth_left == 0:
+        return [items_so_far]
+
+    if depth_left > 0 and current_branch_value <= total_rabbits_available:
+        i = current_branch_value + 1
+        accumulated = []
+        highest_branch_value = total_rabbits_available - depth_left + 1
+
+        while i <= highest_branch_value:
+            next_array = items_so_far[:]
+            next_array.append(i)
+            accumulated.extend(generate_branch(depth_left - 1, i, total_rabbits_available, next_array))
+            i += 1
+
+        return accumulated
+
+
+def generate_key_holders(q, n):
+    combinations = generate_combinations(q, n)
+    minion_list = [[] for q in xrange(q)]
+    for index, item in enumerate(combinations):
+        for key in item:
+            minion_list[key-1].append(index)
+
+    return minion_list
+
+
 def answer(num_buns, num_required):
 
-    return [[]]
+    return generate_key_holders(num_buns, num_required)
 
 
 class TestFreeTheBunnyPrisoners(unittest.TestCase):
     def test1(self):
-        self.assertEqual(answer(2, 1), [[0], [0]])
+        self.assertEqual(answer(3, 1), [[0], [0], [0]])
 
     def test2(self):
+        self.assertEqual(answer(3, 2), [[0, 1], [0, 2], [1, 2]])
+
+    def test4(self):
+        self.assertEqual(answer(3, 3), [[0], [1], [2]])
+
+    def test5(self):
+        self.assertEqual(answer(1, 1), [[0]])
+
+    def test6(self):
+        self.assertEqual(answer(2, 1), [[0], [0]])
+
+    def test7(self):
+        self.assertEqual(answer(2, 2), [[0], [1]])
+
+    def test8(self):
         self.assertEqual(answer(5, 3),
                          [
                              [0, 1, 2, 3, 4, 5],
@@ -101,7 +154,3 @@ class TestFreeTheBunnyPrisoners(unittest.TestCase):
                              [1, 3, 5, 6, 8, 9],
                              [2, 4, 5, 7, 8, 9]
                          ])
-
-    def test3(self):
-        self.assertEqual(answer(4, 4), [[0], [1], [2], [3]])
-
