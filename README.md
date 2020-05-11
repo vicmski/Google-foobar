@@ -1,7 +1,7 @@
 # Google foobar challenges
 
-This is a repo to keep my solutions for Foobar challenges from Google. **They may not have as efficient and nice code.** I am learning python from scratch.
+My solutions for Foobar challenges from Google.
 
 # Using them as solutions to the challenges
 
-Please consider trying to understand the algorithms before submitting them as solutions.
+Please do not use the solutions for the challenges! I've created this repo for people who've solved the problems and want to compare their solution to mine.
